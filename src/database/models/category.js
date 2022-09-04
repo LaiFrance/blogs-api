@@ -1,13 +1,26 @@
-'use strict';
-const Category = (sequelize, DataTypes) => {
-  const Category = sequelize.define('Category',{
-    id:DataTypes.INTEGER,
-    name: DataTypes.STRING
-  }, {
-    timestamps: false,
-    tableName: 'Categories',
-  });
-  return Category;
-};
+module.exports = (sequelize, DataTypes) => {
+  const Category = sequelize.define('Category', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
 
-module.exports = Category
+    name: {
+      type: DataTypes.STRING,
+    },
+
+  }, {
+    tableName: 'Categories',
+    timestamps: false
+  });
+
+  Category.associate = (model) => {
+    Category.hasMany(model.PostCategory, {
+      foreignKey: 'categoryId',
+      as: 'postCategories'
+    });
+  }
+
+  return Category;
+}
