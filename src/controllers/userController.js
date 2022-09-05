@@ -26,7 +26,25 @@ const userControllerGet = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findOne({ where: { id } });
+
+  if (!user) return res.status(404).json({ message: 'User does not exist' });
+
+  return res.status(200).json(
+    {
+      id: user.id,
+      displayName: user.displayName,
+      email: user.email,
+      image: user.image,
+    },
+  );
+};
+
 module.exports = { 
 userValidator,
 userControllerGet,
+getUser,
 };
